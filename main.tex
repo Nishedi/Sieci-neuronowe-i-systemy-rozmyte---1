@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{newclude}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{multirow}
+\usepackage{pgfplots}
+\usepackage{tikz}
+ \usepackage{url}
+\usepackage{titlesec}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{subcaption}
+
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{minted}
+\usepackage{tabularx}
+\lstdefinestyle{mystyle}{
+    belowcaptionskip=1\baselineskip,
+    frame=single, 
+    frameround=tttt,
+    xleftmargin=\parindent,
+    language=[x86masm]Assembler,
+    basicstyle=\footnotesize\ttfamily,
+    commentstyle=\itshape\color{green!60!black},
+    keywordstyle=\color{blue!80!black},
+    identifierstyle=\color{red!80!black},
+    tabsize=4,
+    numbers=left,
+    numbersep=8pt,
+    stepnumber=1,
+    numberstyle=\tiny\color{gray}, 
+    columns = fullflexible,
+}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{setspace} % Pakiet do ustawiania interlinii
+\onehalfspacing
+\begin{document}
+
+\begin{titlepage}
+		\begin{figure}[h]
+			\begin{minipage}[l]{.5\textwidth}%
+				\includegraphics[width=0.3\textwidth]{pwr_logo}
+			\end{minipage}%
+			\begin{minipage}[r]{.5\textwidth}%
+				\includegraphics[width=1\textwidth]{wit_logo}
+			\end{minipage}%
+		\end{figure}
+		
+		\vspace*{3mm}
+		
+		\begin{center}
+			\rule{\textwidth}{0.8pt}\\ 
+			\vspace*{6mm}
+			{\LARGE \textbf{Sieci neuronowe i systemy rozmyte}\\
+            
+            \vspace*{6mm}
+            
+            Sieci płytkie }\\
+            \vspace*{3mm}
+			\rule{\textwidth}{0.8pt}\\
+			
+			\vspace{1.5cm}
+			{\setstretch{2}
+				Politechnika Wrocławska
+				
+				Wydział Informatyki i Telekomunikacji
+				
+				Kierunek: Informatyczne Systemy Automatyki
+				
+				Grupa nr 1
+				
+				
+			}
+		\end{center}
+		
+		\vspace*{2cm}
+		
+		\begin{flushright}
+			{\setstretch{2}
+            	Konrad Pempera - $263948$\\
+	
+                
+				\textbf{Termin zajęć}: Poniedziałek godz. $11^{\underline{15}}$ - $13^{\underline{00}}$ 
+				
+				\textbf{Prowadzący:} Dr inż. Piotr Ciskowski
+				
+			}
+			
+		\end{flushright}
+		
+		\vfill
+		
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+\section*{Sprawozdanie z realizacji projektu: Sieci Płytkie}
+
+\subsection*{1. Cel projektu}
+Celem projektu było zaimplementowanie dwuwarstwowej sieci neuronowej oraz zbadanie procesu jej uczenia na przykładzie bramki XOR oraz wybranego zadania z repozytoriów Machine Learning. W pracy uwzględniono również dodatkowe techniki optymalizacji takie jak momentum, adaptacyjny współczynnik uczenia oraz uczenie mini-batch.
+
+\subsection*{2. Implementacja sieci}
+Zaimplementowana sieć składała się z:
+\begin{itemize}
+\item warstwy wejściowej o dwóch neuronach (dla XOR),
+\item warstwy ukrytej z funkcją aktywacji sigmoid,
+\item warstwy wyjściowej z jednym neuronem i funkcją sigmoid.
+\end{itemize}
+Uczenie odbywało się przy użyciu metody spadku gradientu, a funkcją kosztu był błąd średniokwadratowy MSE.
+
+\subsection*{3. Dodatkowe mechanizmy uczenia}
+W projekcie zaimplementowano następujące rozszerzenia procesu uczenia:
+\begin{itemize}
+\item \textbf{Momentum} -- dodaje część poprzedniej aktualizacji wag, co przyspiesza minimalizacje błędu.
+\item \textbf{Adaptacyjny learning rate} -- wartość kroków uczenia jest automatycznie zwiększana lub zmniejszana na podstawie zmian błędu.
+\item \textbf{Mini-batch} -- aktualizacja wag wykonywana jest na niewielkich porcjach danych, co stabilizuje proces uczenia.
+\item \textbf{Early stopping} -- uczenie jest przerywane po osiągnięciu zadanego poziomu błędu.
+\end{itemize}
+
+\subsection*{4. Eksperyment dla problemu XOR}
+Problem XOR jest nieliniowo separowalny, co oznacza, że pojedynczy perceptron nie jest w stanie go rozwiązać. Dwuwarstwowa sieć z warstwą ukrytą umożliwia nauczenie tego rozkładu.
+
+Podczas eksperymentów:
+\begin{itemize}
+\item sieć osiągnęła niski poziom MSE po kilkuset epokach,
+\item błąd klasyfikacji spadł do 0,
+\item wartości wag konwergowały do stabilnego rozwiązania.
+\end{itemize}
+
+Przedstawiono wykresy:
+\begin{itemize}
+\item błędu MSE na zbiorze uczącym oraz pełnym zbiorze,
+\item błędu klasyfikacji przy progu 0.5,
+\item ewolucji wag w obu warstwach sieci.
+\end{itemize}
+
+\subsection*{5. Eksperyment z danymi rzeczywistymi (Breast Cancer)}
+Zestaw danych \texttt{breast\_cancer} zawiera cechy opisujące próbki tkanki, gdzie zadaniem jest klasyfikacja: złośliwy vs. niezłośliwy.
+
+Po przygotowaniu danych (standaryzacja, podział train/test):
+\begin{itemize}
+\item sieć uzyskała wysoką dokładność klasyfikacji na zbiorze testowym (powyżej 90%),
+\item błąd MSE stopniowo malał w trakcie uczenia,
+\item wagi stabilizowały się wraz z kolejnymi epokami.
+\end{itemize}
+
+\subsection*{6. Wnioski}
+Realizacja projektu pozwoliła na:
+\begin{itemize}
+\item zrozumienie mechanizmów działania sieci dwuwarstwowych,
+\item poznanie wpływu różnych metod optymalizacji na proces uczenia,
+\item zaobserwowanie przebiegów błędu i wag w czasie,
+\item przetestowanie sieci na zarówno syntetycznym, jak i rzeczywistym problemie klasyfikacyjnym.
+\end{itemize}
+
+Sieci płytkie mimo swojej prostoty są w stanie rozwiązywać nieliniowe problemy, a zastosowanie narzędzi takich jak momentum i adaptacyjny learning rate znacząco poprawia stabilność oraz szybkość procesu uczenia.
+
+\end{document}
